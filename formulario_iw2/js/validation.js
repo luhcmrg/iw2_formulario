@@ -5,36 +5,32 @@ document.addEventListener("DOMContentLoaded", function () {
         var senha = document.getElementById('senha').value;
         var confirmaSenha = document.getElementById('confirmaSenha').value;
 
-        // Verifica se as senhas são diferentes
         if (senha !== confirmaSenha) {
-            event.preventDefault();  // Impede o envio do formulário se as senhas não coincidirem
-            document.getElementById('confirmaSenha').classList.add('is-invalid');  // Adiciona a classe de erro visual
-            confirmaSenha.setCustomValidity('As senhas não coincidem'); // Mensagem de erro
+            event.preventDefault();  
+            document.getElementById('confirmaSenha').classList.add('is-invalid');  
+            confirmaSenha.setCustomValidity('As senhas não coincidem');
         } else {
-            document.getElementById('confirmaSenha').classList.remove('is-invalid');  // Remove a classe de erro se as senhas forem iguais
-            confirmaSenha.setCustomValidity(''); // Limpa a mensagem de erro
+            document.getElementById('confirmaSenha').classList.remove('is-invalid');
+            confirmaSenha.setCustomValidity(''); 
         }
 
-        // Validação de campos obrigatórios
         if (form.checkValidity() === false) {
-            event.preventDefault(); // Impede o envio se houver campos inválidos
+            event.preventDefault(); 
             event.stopPropagation();
         } else {
-            // Se todos os campos forem válidos
+
             alert("Cadastrado com sucesso!");
-            form.submit(); // Envia o formulário
+            form.submit(); 
         }
 
-        // Adiciona a classe de validação
         form.classList.add("was-validated");
     });
     document.addEventListener('DOMContentLoaded', function () {
         var form = document.getElementById('userForm');
         
         form.addEventListener('submit', function (event) {
-            event.preventDefault(); // Impede o envio padrão do formulário
+            event.preventDefault(); 
             
-            // Cria uma instância de XMLHttpRequest
             var xhr = new XMLHttpRequest();
             xhr.open('POST', form.action, true);
             
@@ -42,17 +38,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (xhr.status === 200) {
                     var response = JSON.parse(xhr.responseText);
                     if (response.success) {
-                        // Exibir modal de sucesso
                         var successModal = new bootstrap.Modal(document.getElementById('successModal'));
                         successModal.show();
     
-                        // Redireciona após o fechamento do modal (se necessário)
                         document.getElementById('successModal').addEventListener('hidden.bs.modal', function () {
-                            window.location.href = 'index.html'; // Redireciona para a página inicial, se necessário
+                            window.location.href = 'index.html'; 
                         });
                     }
                 } else {
-                    // Tratar erros
                     var errorResponse = JSON.parse(xhr.responseText);
                     alert(errorResponse.error);
                 }
