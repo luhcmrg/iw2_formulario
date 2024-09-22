@@ -8,38 +8,38 @@ document.addEventListener('DOMContentLoaded', function () {
     // Máscara para o telefone
     telefone.addEventListener('input', function () {
         this.value = this.value
-            .replace(/\D/g, '')          // Remove caracteres não numéricos
-            .replace(/^(\d{2})(\d)/, '($1) $2') // Adiciona parênteses
-            .replace(/(\d{5})(\d)/, '$1-$2') // Adiciona hífen
-            .replace(/(-\d{4})\d+?$/, '$1'); // Limita ao formato padrão
+            .replace(/\D/g, '')   
+            .replace(/^(\d{2})(\d)/, '($1) $2') 
+            .replace(/(\d{5})(\d)/, '$1-$2') 
+            .replace(/(-\d{4})\d+?$/, '$1'); 
     });
 
     // Máscara para o CEP
     cep.addEventListener('input', function () {
         this.value = this.value
-            .replace(/\D/g, '')          // Remove caracteres não numéricos
-            .replace(/^(\d{5})(\d)/, '$1-$2') // Adiciona hífen
-            .replace(/(-\d{3})\d+?$/, '$1'); // Limita ao formato padrão
+            .replace(/\D/g, '')      
+            .replace(/^(\d{5})(\d)/, '$1-$2') 
+            .replace(/(-\d{3})\d+?$/, '$1'); 
     });
 
     // Máscara para o CPF
     cpf.addEventListener('input', function () {
         this.value = this.value
-            .replace(/\D/g, '')          // Remove caracteres não numéricos
-            .replace(/^(\d{3})(\d)/, '$1.$2') // Adiciona ponto
-            .replace(/^(\d{3}\.\d{3})(\d)/, '$1.$2') // Adiciona ponto
-            .replace(/^(\d{3}\.\d{3}\.\d{3})(\d)/, '$1-$2') // Adiciona hífen
-            .replace(/(-\d{2})\d+?$/, '$1'); // Limita ao formato padrão
+            .replace(/\D/g, '')         
+            .replace(/^(\d{3})(\d)/, '$1.$2') 
+            .replace(/^(\d{3}\.\d{3})(\d)/, '$1.$2') 
+            .replace(/^(\d{3}\.\d{3}\.\d{3})(\d)/, '$1-$2') /
+            .replace(/(-\d{2})\d+?$/, '$1'); 
     });
 
     // Máscara para o RG
     rg.addEventListener('input', function () {
         this.value = this.value
-            .replace(/\D/g, '')          // Remove caracteres não numéricos
-            .replace(/^(\d{2})(\d{2})/, '$1.$2') // Adiciona o primeiro ponto
-            .replace(/^(\d{2}\.\d{3})(\d{2})/, '$1.$2') // Adiciona o segundo ponto
-            .replace(/^(\d{2}\.\d{3}\.\d{3})(\d{1,2})/, '$1-$2') // Adiciona o hífen
-            .slice(0, 12);               // Limita o tamanho do valor para 12 caracteres
+            .replace(/\D/g, '')         
+            .replace(/^(\d{2})(\d{2})/, '$1.$2') /
+            .replace(/^(\d{2}\.\d{3})(\d{2})/, '$1.$2') 
+            .replace(/^(\d{2}\.\d{3}\.\d{3})(\d{1,2})/, '$1-$2') 
+            .slice(0, 12);               
     });
 
     // Adiciona um listener ao botão de consulta de CEP
