@@ -7,9 +7,8 @@ ini_set('display_errors', 1);
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "rio";
+$dbname = "ipi_2";
 
-// Criar conexão
 $conn = new mysqli($servername, $username, $password, $dbname);
 
 // Verificar conexão
@@ -23,7 +22,6 @@ $nascimento = $_POST['nascimento'];
 $email = $_POST['email'];
 $telefone = $_POST['telefone'];
 $cep = $_POST['cep'];
-$endereco = $_POST['endereco'];
 $cpf = $_POST['cpf'];
 $rg = $_POST['rg'];
 $senha = password_hash($_POST['senha'], PASSWORD_DEFAULT);
@@ -31,9 +29,7 @@ $assunto = $_POST['assunto'];
 $mensagem = $_POST['mensagem'];
 
 // Verificar se os campos obrigatórios estão preenchidos
-if (empty($nome) || empty($nascimento) || empty($email) || empty($telefone) || empty($cep) || 
-    empty($endereco) || empty($cpf) || empty($rg) || empty($senha) || empty($assunto) || empty($mensagem)) {
-    
+if (empty($nome) || empty($nascimento) || empty($email) || empty($telefone) || empty($cep) || empty($cpf) || empty($rg) || empty($senha) || empty($assunto) || empty($mensagem)) {
     http_response_code(400);
     echo json_encode(['error' => 'Todos os campos são obrigatórios.']);
     exit();
@@ -41,6 +37,12 @@ if (empty($nome) || empty($nascimento) || empty($email) || empty($telefone) || e
 
 // Verificar se o e-mail já existe
 $stmt = $conn->prepare("SELECT id FROM usuario WHERE email = ?");
+if (!$stmt) {
+    http_response_code(500);
+    echo json_encode(['error' => 'Erro ao preparar a consulta: ' . $conn->error]);
+    exit();
+}
+
 $stmt->bind_param("s", $email);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -50,8 +52,14 @@ if ($result->num_rows > 0) {
     echo json_encode(['error' => 'Este e-mail já está cadastrado.']);
 } else {
     // Inserir dados na tabela
-    $stmt = $conn->prepare("INSERT INTO usuario (nome, nascimento, email, telefone, cep, endereco, cpf, rg, senha, assunto, mensagem) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("sssssssssss", $nome, $nascimento, $email, $telefone, $cep, $endereco, $cpf, $rg, $senha, $assunto, $mensagem);
+    $stmt = $conn->prepare("INSERT INTO usuario (nome, nascimento, email, telefone, cep, cpf, rg, senha, assunto, mensagem) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    if (!$stmt) {
+        http_response_code(500);
+        echo json_encode(['error' => 'Erro ao preparar a consulta: ' . $conn->error]);
+        exit();
+    }
+
+    $stmt->bind_param("sssssssssss", $nome, $nascimento, $email, $telefone, $cep, $cpf, $rg, $senha, $assunto, $mensagem);
 
     if ($stmt->execute()) {
         http_response_code(200);

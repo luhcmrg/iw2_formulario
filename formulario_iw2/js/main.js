@@ -1,36 +1,32 @@
-document.addEventListener('DOMContentLoaded'), function () {
+document.addEventListener('DOMContentLoaded', function () {
     var form = document.getElementById('userForm');
     var cepInput = document.getElementById('cep');
     var consultarCepButton = document.getElementById('consultarCep');
 
     form.addEventListener('submit', function (event) {
-       
+        event.preventDefault();
+    
+        var form = event.target;
+    
         if (!form.checkValidity()) {
-            event.preventDefault(); 
-            event.stopPropagation(); 
-        } else {
-            form.classList.add('was-validated'); 
-
-
-            event.preventDefault(); 
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', form.action, true);
-
-            xhr.onload = function () {
-                if (xhr.status === 200) {
-                    var successModal = new bootstrap.Modal(document.getElementById('successModal'));
-                    successModal.show();
-
-                    document.getElementById('successModal').addEventListener('hidden.bs.modal', function () {
-                        window.location.href = 'index.html'; 
-                    });
-                }
-            };
-
-            var formData = new FormData(form);
-            xhr.send(formData);
+            form.classList.add('was-validated');
+            return;
         }
+    
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', form.action, true);
+    
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                console.log(response.message);
+            }
+        };
+    
+        var formData = new FormData(form);
+        xhr.send(formData);
     });
+    
 
     consultarCepButton.addEventListener('click', function () {
         var cep = cepInput.value.replace(/\D/g, ''); 
@@ -44,7 +40,7 @@ document.addEventListener('DOMContentLoaded'), function () {
                     var data = JSON.parse(xhr.responseText);
 
                     if (!data.erro) {
-                        document.getElementById('logradouro').value = data.logradouro;
+                        document.getElementById('endereco').value = data.logradouro;
                         document.getElementById('bairro').value = data.bairro;
                         document.getElementById('cidade').value = data.localidade;
                         document.getElementById('estado').value = data.uf;
@@ -64,4 +60,4 @@ document.addEventListener('DOMContentLoaded'), function () {
         }
     })
 
-}
+})
