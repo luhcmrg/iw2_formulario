@@ -2,7 +2,7 @@
 $host = 'localhost';
 $user = 'root';
 $password = '';
-$database = 'ipi_2'; 
+$database = 'IPI_2'; 
 
 $conn = mysqli_connect($host, $user, $password, $database);
 
